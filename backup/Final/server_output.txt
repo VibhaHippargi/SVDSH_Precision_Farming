@@ -1,0 +1,73 @@
+divya@divya-Inspiron-14-5425:~/Documents/Vehicle_platoon$ ./Leadplatoon 
+Check_from_leading_vehicle...
+Bind Successful with Lead vehicle.....8888
+Listening to following vehicles...
+Following_vehicle_Connection accepted 127.0.0.1:34294
+Following_client: Hi
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_Client: Hi
+constant speed sent: 60
+Following_client: What is the speed?
+constant Distance between sent trucks : 10
+Following_client: What is the distance?
+new_speed maintain until object there:  40
+Following_client: intrusion
+new_distance  maintain until object there : 20
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_Client: ok
+constant speed sent: 60
+Following_client: speed
+constant Distance between sent trucks : 10
+Following_client: HiWhat is the speed?
+new_speed maintain until object there:  40
+Following_client: What is the distance?
+new_distance  maintain until object there : 20
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_Client: intrusion
+constant speed sent: 60
+Following_client: ok
+constant Distance between sent trucks : 10
+Following_vehicle_Connection accepted 127.0.0.1:36446
+Following_client: HiHi
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_Client: What is the speed?
+constant speed sent: 60
+Following_client: What is the distance?
+constant Distance between sent trucks : 10
+Following_client: intrusion
+new_speed maintain until object there:  40
+Following_client: ok
+new_distance  maintain until object there : 20
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_vehicle_Connection accepted 127.0.0.1:59794
+Following_client: HiHi
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_Client: What is the speed?
+constant speed sent: 60
+Following_client: What is the distance?
+constant Distance between sent trucks : 10
+Following_client: intrusion
+new_speed maintain until object there:  40
+Following_client: ok
+new_distance  maintain until object there : 20
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_Client: speed
+constant speed sent: 60
+Following_client: HiWhat is the speed?
+constant Distance between sent trucks : 10
+Following_client: What is the distance?
+new_speed maintain until object there:  40
+Following_client: intrusion
+new_distance  maintain until object there : 20
+Hello from Lead_platoon
+Hello from Following_platoon
+Following_Client: ok
+constant speed sent: 60
+Following_client: distance
