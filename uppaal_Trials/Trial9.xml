@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan move, weed_detected,diseased_detected;
+chan end;
+bool weed=false;
+chan weed_removed;
+//chan weed_location,
+bool continue_observing=false;
+chan weed_location,diseased_location;
+bool diseased=false;
+chan diseased_removed;
+int shift=0;
+bool done=false;
+bool w_on=false;
+bool s_on=false;
+clock wait;
+int weeder_count=0;
+int spray_count=0;
+int target=1;
+
+int counter=0;
+</declaration>
+	<template>
+		<name x="5" y="5">Rover</name>
+		<declaration>// Place local declarations here.
+</declaration>
+		<location id="id0" x="-433" y="-119">
+			<name x="-443" y="-153">start</name>
+		</location>
+		<location id="id1" x="-221" y="-119">
+			<name x="-255" y="-161">PlantObserver</name>
+		</location>
+		<location id="id2" x="8" y="-246">
+			<name x="8" y="-280">Weeder</name>
+		</location>
+		<location id="id3" x="8" y="25">
+			<name x="-2" y="-9">CropProtection</name>
+		</location>
+		<location id="id4" x="161" y="-119">
+			<name x="151" y="-153">Rover_End</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="25" y="-144">end?</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-51" y="68">!diseased&amp;&amp;done</label>
+			<label kind="assignment" x="-314" y="8">done=false,
+spray_count++</label>
+			<nail x="-221" y="170"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-85" y="-331">!weed&amp;&amp;done</label>
+			<label kind="assignment" x="-340" y="-306">done=false,
+weeder_count++</label>
+			<nail x="-59" y="-289"/>
+			<nail x="-59" y="-289"/>
+			<nail x="-229" y="-408"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-161" y="-102">s_on==true&amp;&amp;wait&gt;5</label>
+			<label kind="assignment" x="-59" y="-42">s_on=false</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-144" y="-170">w_on==true&amp;&amp;wait&gt;5</label>
+			<label kind="assignment" x="-42" y="-221">w_on=false</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-357" y="-153">move!</label>
+		</transition>
+	</template>
+	<template>
+		<name>Crop_protection</name>
+		<location id="id5" x="-408" y="-76">
+			<name x="-416" y="-110">CP_start</name>
+		</location>
+		<location id="id6" x="-212" y="-76">
+			<name x="-255" y="-119">get_Location</name>
+		</location>
+		<location id="id7" x="102" y="-76">
+			<name x="92" y="-110">Spray</name>
+		</location>
+		<location id="id8" x="297" y="-76">
+			<name x="287" y="-110">CP_end</name>
+		</location>
+		<init ref="id5"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-407" y="43">diseased_removed!</label>
+			<nail x="297" y="60"/>
+			<nail x="-425" y="60"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="assignment" x="120" y="-76">diseased=false</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-85" y="-110">diseased_location?</label>
+			<nail x="-102" y="-76"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-390" y="-93">diseased_detected?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Weeder</name>
+		<location id="id9" x="-637" y="-238">
+			<name x="-647" y="-272">W_start</name>
+		</location>
+		<location id="id10" x="-441" y="-238">
+			<name x="-484" y="-281">get_Location</name>
+		</location>
+		<location id="id11" x="-127" y="-238">
+			<name x="-137" y="-272">Remove_weed</name>
+		</location>
+		<location id="id12" x="68" y="-238">
+			<name x="58" y="-272">W_end</name>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-636" y="-119">weed_removed!</label>
+			<nail x="68" y="-102"/>
+			<nail x="-654" y="-102"/>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="assignment" x="-109" y="-238">weed=false</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-314" y="-272">weed_location?</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-619" y="-255">weed_detected?</label>
+		</transition>
+	</template>
+	<template>
+		<name>PlantObserver</name>
+		<location id="id13" x="-629" y="-153">
+			<name x="-639" y="-187">PO_start</name>
+		</location>
+		<location id="id14" x="-178" y="42">
+			<name x="-188" y="8">Reporting_Diseased</name>
+		</location>
+		<location id="id15" x="-434" y="-153">
+			<name x="-444" y="-187">Observing</name>
+		</location>
+		<location id="id16" x="-195" y="-340">
+			<name x="-205" y="-374">Reporting_weed</name>
+		</location>
+		<location id="id17" x="84" y="-145">
+			<name x="74" y="-179">Shared_location</name>
+		</location>
+		<location id="id18" x="442" y="-144">
+			<name x="432" y="-178">PO_End</name>
+		</location>
+		<init ref="id13"/>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id18"/>
+			<label kind="guard" x="102" y="-144">weeder_count==target &amp;&amp; spray_count==target
+&amp;&amp;wait&gt;60</label>
+			<label kind="synchronisation" x="254" y="-170">end!</label>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id15"/>
+			<label kind="guard" x="-408" y="68">diseased==false</label>
+			<label kind="synchronisation" x="-246" y="68">diseased_removed?</label>
+			<label kind="assignment" x="-42" y="68">done=true</label>
+			<nail x="93" y="93"/>
+			<nail x="-442" y="93"/>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id15"/>
+			<label kind="guard" x="-399" y="-437">weed==false</label>
+			<label kind="synchronisation" x="-237" y="-437">weed_removed?</label>
+			<label kind="assignment" x="-50" y="-429">done=true</label>
+			<nail x="76" y="-408"/>
+			<nail x="-434" y="-417"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id17"/>
+			<label kind="guard" x="-178" y="-77">!s_on</label>
+			<label kind="synchronisation" x="-178" y="-60">diseased_location!</label>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id17"/>
+			<label kind="guard" x="-161" y="-187">!w_on</label>
+			<label kind="synchronisation" x="-161" y="-170">weed_location!</label>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id14"/>
+			<label kind="guard" x="-612" y="-85">(weed==false||diseased==false) &amp;&amp;!done&amp;&amp;
+spray_count&lt;target</label>
+			<label kind="synchronisation" x="-383" y="-128">diseased_detected!</label>
+			<label kind="assignment" x="-416" y="-64">diseased=true,
+s_on=true</label>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id16"/>
+			<label kind="guard" x="-527" y="-314">(weed==false||diseased==false) &amp;&amp;!done&amp;&amp;
+weeder_count&lt;target</label>
+			<label kind="synchronisation" x="-425" y="-255">weed_detected!</label>
+			<label kind="assignment" x="-314" y="-212">weed=true,
+w_on=true</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="-553" y="-179">move?</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+R = Rover();
+PO = PlantObserver();
+W=Weeder();
+CP=Crop_protection();
+// List one or more processes to be composed into a system.
+system R,PO,W,CP;
+    </system>
+	<queries>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
