@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+int[0,1] ON,OFF;
+int[1,2] read;
+int x;
+clock c;
+
+</declaration>
+	<template>
+		<name x="5" y="5">Activate_robot</name>
+		<parameter>const int[1,2] activate, int[0,1] &amp;Reset_self, int[0,1] &amp;other</parameter>
+		<declaration>// Place local declarations here.
+// List one or more processes to be composed into a system.
+
+</declaration>
+		<location id="id0" x="-153" y="-110">
+			<name x="-187" y="-144">Start</name>
+		</location>
+		<location id="id1" x="85" y="-110">
+			<name x="77" y="-93">Camera</name>
+		</location>
+		<location id="id2" x="374" y="-110">
+			<name x="349" y="-102">weed_plant</name>
+		</location>
+		<location id="id3" x="374" y="-221">
+			<name x="364" y="-255">Weedo</name>
+		</location>
+		<location id="id4" x="85" y="-221">
+			<name x="93" y="-246">wait</name>
+		</location>
+		<location id="id5" x="85" y="-289">
+			<name x="76" y="-323">Critical_section</name>
+		</location>
+		<location id="id6" x="-8" y="-221">
+			<name x="-42" y="-255">R_user</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id5"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id6"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id1"/>
+			<label kind="guard" x="85" y="-187">x&gt;=2</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="-33" y="-42">OFF</label>
+			<nail x="25" y="-42"/>
+			<nail x="-51" y="-42"/>
+			<nail x="-128" y="-93"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="guard" x="204" y="-238">other==0</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="guard" x="382" y="-170">read==activate</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="assignment" x="153" y="-110">read:=(activate==1?2:1)</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="assignment" x="-76" y="-110">ON</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Process_1 = Activate_robot(1,ON,OFF);
+Process_2 = Activate_robot(2,ON,OFF);
+
+
+// List one or more processes to be composed into a system.
+system Process_1,Process_2;
+
+</system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt;Process.Camera</formula>
+			<comment>Eventually it can possible to reach the camera location with timed automata
+</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt;Process.Camera</formula>
+			<comment>For all paths in will it reach to Camera here it not needed that it will reach to camera all the time (non deterministic)
+</comment>
+		</query>
+	</queries>
+</nta>

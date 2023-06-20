@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+//chan weedo_act,W_Signal,H_plant,H_get,H_noaction,D_detection,D_plant,Wsense;
+chan Sensordetect,Healthyplant_observed,image_healthy,Crop_signal,image_Diseased,Pesticides,wait;
+clock x;
+clock t;
+int userinfo;
+int[0,500] safesignal;
+int[0,300] unsafesignal;
+int [0,50] Tm;
+int [0,100] T;
+
+</declaration>
+	<template>
+		<name x="5" y="5">Healthy_plant</name>
+		<parameter>chan &amp;Sensordetect,chan &amp;Healthyplant_observed,int Tm,int T</parameter>
+		<declaration>// Place local declarations here
+clock x;
+//int t;
+</declaration>
+		<location id="id0" x="-34" y="-85">
+			<name x="-44" y="-119">Healthy</name>
+			<label kind="invariant" x="-44" y="-68">x&lt;=T</label>
+		</location>
+		<location id="id1" x="-229" y="59">
+			<name x="-272" y="67">noaction</name>
+			<label kind="invariant" x="-246" y="85">x&lt;=Tm</label>
+		</location>
+		<location id="id2" x="-391" y="-76">
+			<name x="-401" y="-110">Start</name>
+		</location>
+		<location id="id3" x="-212" y="-204">
+			<name x="-222" y="-238">Crop_detected</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-450" y="-8">Healthyplant_observed!</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="assignment" x="-178" y="-17">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id0"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-416" y="-170">userinfo==safesignal</label>
+			<label kind="synchronisation" x="-323" y="-127">Sensordetect?</label>
+			<label kind="assignment" x="-340" y="-153">x=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Crop_protection</name>
+		<parameter>chan &amp;image_healthy,chan &amp;Sensordetect, chan &amp;Healthyplant_observed ,chan &amp;wait,chan &amp;Crop_signal,chan &amp;Pesticides,chan &amp;image_Diseased,int TD,int TH</parameter>
+		<declaration>clock x;</declaration>
+		<location id="id4" x="-331" y="-144">
+			<name x="-323" y="-170">Idle</name>
+		</location>
+		<location id="id5" x="-331" y="42">
+			<name x="-467" y="17">Receive_plant_signal</name>
+		</location>
+		<location id="id6" x="-110" y="42">
+			<name x="-93" y="33">send_to_sensor</name>
+			<label kind="invariant" x="-120" y="59">x&lt;=150</label>
+			<urgent/>
+		</location>
+		<location id="id7" x="-110" y="-144">
+			<name x="-103" y="-178">Healthy_plant</name>
+		</location>
+		<location id="id8" x="-595" y="42">
+			<name x="-697" y="51">Receive_Diseasedsignal</name>
+			<urgent/>
+		</location>
+		<location id="id9" x="-782" y="-136">
+			<name x="-892" y="-170">Need_protection</name>
+			<label kind="invariant" x="-816" y="-119">x&lt;=300</label>
+			<urgent/>
+		</location>
+		<location id="id10" x="-595" y="-144">
+			<name x="-605" y="-178">Diseased_plant</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-671" y="-314">wait!</label>
+			<nail x="-782" y="-289"/>
+			<nail x="-331" y="-289"/>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-773" y="-59">Pesticides?</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-680" y="-127">Crop_signal!</label>
+			<label kind="assignment" x="-595" y="-51">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-493" y="-161">userinfo==unsafesignal</label>
+			<label kind="synchronisation" x="-578" y="-144">image_Diseased?</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-238" y="-144">wait!</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-102" y="-93">Healthyplant_observed?</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-280" y="42">Sensordetect!</label>
+			<label kind="assignment" x="-323" y="59">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-331" y="-59">userinfo==safesignal</label>
+			<label kind="synchronisation" x="-433" y="-102">image_healthy?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Diseased_plant</name>
+		<parameter>chan &amp;Crop_signal,chan &amp;Pesticides,int TDless,int TDmore</parameter>
+		<location id="id11" x="-204" y="-110">
+			<name x="-214" y="-144">start</name>
+		</location>
+		<location id="id12" x="8" y="-110">
+			<name x="-2" y="-144">Crop_Signal</name>
+		</location>
+		<location id="id13" x="8" y="17">
+			<name x="-9" y="25">Diseased</name>
+			<label kind="invariant" x="0" y="42">x&lt;=TDmore</label>
+		</location>
+		<location id="id14" x="-187" y="17">
+			<name x="-197" y="-17">Plant_observer</name>
+			<label kind="invariant" x="-197" y="34">x&lt;=TDless</label>
+		</location>
+		<location id="id15" x="-323" y="-59">
+			<name x="-365" y="-85">Spray</name>
+		</location>
+		<init ref="id11"/>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id11"/>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="-323" y="-25">Pesticides!</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="assignment" x="-152" y="17">x=0</label>
+			<nail x="-170" y="17"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id13"/>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-170" y="-127">userinfo==unsafesignal</label>
+			<label kind="synchronisation" x="-110" y="-110">Crop_signal?</label>
+			<label kind="assignment" x="-153" y="-110">x=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>start_process</name>
+		<parameter>chan &amp;image_healthy,chan &amp;image_Diseased,chan &amp;wait</parameter>
+		<declaration>clock x;</declaration>
+		<location id="id16" x="-323" y="-119">
+			<name x="-399" y="-144">startrobot</name>
+		</location>
+		<location id="id17" x="-144" y="-119">
+			<name x="-161" y="-110">Sense</name>
+		</location>
+		<location id="id18" x="0" y="-119">
+			<name x="-10" y="-153">user</name>
+		</location>
+		<location id="id19" x="-136" y="51">
+		</location>
+		<init ref="id16"/>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id18"/>
+			<label kind="synchronisation" x="-76" y="25">image_Diseased!</label>
+			<nail x="93" y="51"/>
+			<nail x="93" y="-119"/>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id19"/>
+			<label kind="guard" x="-476" y="-34">userinfo==unsafesignal</label>
+			<nail x="-323" y="51"/>
+		</transition>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="-153" y="-17">wait?</label>
+			<nail x="-25" y="0"/>
+			<nail x="-221" y="0"/>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id18"/>
+			<label kind="synchronisation" x="-119" y="-136">image_healthy!</label>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id17"/>
+			<label kind="guard" x="-306" y="-144">userinfo==safesignal</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+const int Healthy = 200;
+const int Diseased = 300;
+const int unuse=100;
+start=start_process(image_healthy,image_Diseased,wait);
+
+safeplants=Healthy_plant(Sensordetect,Healthyplant_observed,50,100);
+cropdata=Crop_protection(image_healthy,Sensordetect,Healthyplant_observed,wait,Crop_signal,Pesticides,image_Diseased,150,300);
+Diseased_Crop=Diseased_plant(Crop_signal,Pesticides,100,200);
+system start,safeplants,cropdata,Diseased_Crop;</system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment>There is no deadlock</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; safeplants.Healthy</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] not (safeplants.Healthy and x&lt;T)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] not (safeplants.Healthy and x&lt;Tm)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; safeplants.Healthy imply x&gt;=Diseased	</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula></formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
