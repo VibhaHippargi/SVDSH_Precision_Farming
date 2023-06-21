@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan weed_found,diseased_found,weeder_done,sprayer_done;
+chan weed_loc,diseased_loc;
+chan healthy_detected;
+chan continue_observing;
+
+
+clock x;
+clock now;
+//int[0,1] D;		// whether something is detected or not
+
+</declaration>
+	<template>
+		<name x="5" y="5">Observer</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="-688" y="170">
+			<name x="-698" y="136">begin</name>
+		</location>
+		<location id="id1" x="-544" y="170">
+			<name x="-611" y="136">Work_Observer</name>
+		</location>
+		<location id="id2" x="-340" y="77">
+			<name x="-350" y="43">Weed_Detected</name>
+		</location>
+		<location id="id3" x="-340" y="263">
+			<name x="-350" y="229">Diseased_Detected</name>
+		</location>
+		<location id="id4" x="-170" y="76">
+			<name x="-180" y="42">Work_Weeder</name>
+		</location>
+		<location id="id5" x="-170" y="263">
+			<name x="-180" y="229">Work_CropProtection</name>
+		</location>
+		<location id="id6" x="-263" y="170">
+			<name x="-273" y="136">Continue</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-416" y="178">continue_observing?</label>
+			<nail x="-459" y="187"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-433" y="144">healthy_detected!</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-527" y="365">sprayer_done?</label>
+			<nail x="-162" y="399"/>
+			<nail x="-544" y="391"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-535" y="-59">weeder_done?</label>
+			<nail x="-170" y="-42"/>
+			<nail x="-544" y="-42"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-322" y="246">diseased_loc!</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-322" y="59">weed_loc!</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-468" y="221">diseased_found!</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-467" y="76">weed_found!</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+		</transition>
+	</template>
+	<template>
+		<name>Waiting</name>
+		<location id="id7" x="-76" y="-93">
+			<name x="-86" y="-127">idle</name>
+		</location>
+		<location id="id8" x="-76" y="51">
+			<name x="-86" y="17">waiting</name>
+			<label kind="invariant" x="-86" y="68">x&lt;=2</label>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-169" y="-13">x&gt;=1</label>
+			<label kind="synchronisation" x="-169" y="4">continue_observing!</label>
+			<nail x="-187" y="-8"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-76" y="-63">healthy_detected?</label>
+			<label kind="assignment" x="-76" y="-21">x:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Protector</name>
+		<parameter>urgent chan &amp;detected,chan &amp;get_loc, chan &amp;task_done,int activation_guard,int activation_invariant,int busy_guard,int busy_invariant</parameter>
+		<declaration>bool On=false;</declaration>
+		<location id="id9" x="-510" y="-76">
+		</location>
+		<location id="id10" x="-68" y="-76">
+			<name x="-76" y="-110">busy</name>
+			<label kind="invariant" x="-51" y="-85">x&lt;=busy_invariant</label>
+		</location>
+		<location id="id11" x="-331" y="-76">
+			<name x="-348" y="-110">Activated</name>
+			<label kind="invariant" x="-391" y="-51">x&lt;=activation_invariant</label>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-306" y="-76">x&gt;=activation_guard</label>
+			<label kind="synchronisation" x="-229" y="-102">get_loc?</label>
+			<label kind="assignment" x="-136" y="-76">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-459" y="-102">detected?</label>
+			<label kind="assignment" x="-399" y="-76">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-59" y="17">x&gt;=busy_guard</label>
+			<label kind="synchronisation" x="-323" y="8">task_done!</label>
+			<nail x="-68" y="34"/>
+			<nail x="-510" y="34"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Plant_Observer= Observer();
+Weeder= Protector(weed_found,weed_loc,weeder_done,1,2,5,7);
+Crop_protecter= Protector(diseased_found,diseased_loc,sprayer_done,1,2,10,12);
+
+Wait=Waiting();
+
+// List one or more processes to be composed into a system.
+system Plant_Observer,Weeder,Crop_protecter,Wait;</system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment>In all reachable states it is the case that : There is NO deadlock in this system
+Yes
+</comment>
+		</query>
+		<query>
+			<formula>A[] Weeder.Activated == (Plant_Observer.Weed_Detected)</formula>
+			<comment>In all reachable states it is the case that : Weeder is Activated only when Plant Observer Detects weed
+yes</comment>
+		</query>
+		<query>
+			<formula>A[] S.Activated == (PO.Diseased_Detected)</formula>
+			<comment>In all reachable states it is the case that : CropProtection is Activated only when Plant Observer Detects Diseased plant
+Yes</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; PO.Work_Observer || W.Activated|| S.Activated</formula>
+			<comment>There exists a reachable state such that : Only 1 role can be active at a time?
+Yes
+</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; PO.Work_Observer &amp;&amp; W.Activated &amp;&amp; S.Activated</formula>
+			<comment>There exists a reachable state such that : All 3 role can be active at a time?
+No</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (x &gt; 6) imply !Weeder.busy
+
+</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (x &lt; 5 and x &gt;= 8) imply Weeder.busy
+</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] (x ==7) imply !Weeder.busy</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan weed_found,spray_found,weeder_done,sprayer_done;
+chan weed_loc,spray_loc;
+chan nothing;
+chan go_back;
+
+chan delay;
+clock x;
+clock now;
+int[0,1] D;		// whether something is detected or not</declaration>
+	<template>
+		<name x="5" y="5">Observer</name>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="-195" y="213">
+			<name x="-205" y="179">begin</name>
+		</location>
+		<location id="id1" x="-60" y="213">
+			<name x="-110" y="162">Work_Observer</name>
+		</location>
+		<location id="id2" x="153" y="120">
+			<name x="143" y="86">Weed_Detected</name>
+		</location>
+		<location id="id3" x="153" y="306">
+			<name x="143" y="272">Spray_Detected</name>
+		</location>
+		<location id="id4" x="323" y="119">
+			<name x="313" y="85">Work_Weeder</name>
+		</location>
+		<location id="id5" x="323" y="306">
+			<name x="313" y="272">Work_Sprayer</name>
+		</location>
+		<location id="id6" x="178" y="204">
+			<name x="168" y="170">no</name>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-144" y="318">go_back?</label>
+			<nail x="-59" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-152" y="246">nothing!</label>
+			<label kind="assignment" x="-152" y="263">D=1-D</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-33" y="421">sprayer_done?</label>
+			<label kind="assignment" x="-33" y="438">D=1-D</label>
+			<nail x="331" y="442"/>
+			<nail x="-51" y="434"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-42" y="-16">weeder_done?</label>
+			<label kind="assignment" x="-42" y="1">D=1-D</label>
+			<nail x="323" y="1"/>
+			<nail x="-60" y="1"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="171" y="289">spray_loc!</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="171" y="102">weed_loc!</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="25" y="264">spray_found!</label>
+			<label kind="assignment" x="-42" y="259">D=1-D</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="34" y="137">weed_found!</label>
+			<label kind="assignment" x="-42" y="166">D=1-D</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+		</transition>
+	</template>
+	<template>
+		<name>idle_c</name>
+		<location id="id7" x="-76" y="-93">
+			<name x="-86" y="-127">idle</name>
+		</location>
+		<location id="id8" x="-76" y="51">
+			<name x="-86" y="17">waiting</name>
+			<label kind="invariant" x="-86" y="68">x&lt;=2</label>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-169" y="-13">x&gt;=1</label>
+			<label kind="synchronisation" x="-169" y="4">go_back!</label>
+			<nail x="-187" y="-8"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-76" y="-63">nothing?</label>
+			<label kind="assignment" x="-76" y="-21">x:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Protector</name>
+		<parameter>urgent chan &amp;detected,chan &amp;get_loc, chan &amp;task_done,int activation_guard,int activation_invariant,int busy_guard,int busy_invariant</parameter>
+		<location id="id9" x="-510" y="-76">
+			<name x="-520" y="-110">free</name>
+		</location>
+		<location id="id10" x="-68" y="-76">
+			<name x="-76" y="-110">busy</name>
+			<label kind="invariant" x="-51" y="-85">x&lt;=busy_invariant</label>
+		</location>
+		<location id="id11" x="-331" y="-76">
+			<name x="-348" y="-110">Activated</name>
+			<label kind="invariant" x="-391" y="-51">x&lt;=activation_invariant</label>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-306" y="-76">x&gt;=activation_guard</label>
+			<label kind="synchronisation" x="-229" y="-102">get_loc?</label>
+			<label kind="assignment" x="-136" y="-76">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-459" y="-102">detected?</label>
+			<label kind="assignment" x="-399" y="-76">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-59" y="17">x&gt;=busy_guard</label>
+			<label kind="synchronisation" x="-323" y="8">task_done!</label>
+			<nail x="-68" y="34"/>
+			<nail x="-510" y="34"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+PO= Observer();
+W= Protector(weed_found,weed_loc,weeder_done,1,2,5,7);
+S= Protector(spray_found,spray_loc,sprayer_done,1,2,10,12);
+
+I=idle_c();
+
+// List one or more processes to be composed into a system.
+system PO,W,S,I;
+    </system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment>This system is deadlock free</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; PO.Work_Observer || W.Activated|| S.Activated</formula>
+			<comment>Only one role can be active at a time either Observer or Weeder or Sprayer</comment>
+		</query>
+	</queries>
+</nta>

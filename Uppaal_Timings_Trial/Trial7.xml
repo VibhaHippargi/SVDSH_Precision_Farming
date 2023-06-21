@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+chan weed_found;
+chan weed_loc,diseased_plant_loc;
+chan healthy_plant_found;
+chan continue_observing;
+chan diseased_plant_found;
+chan sprayed_pesticide,weed_removed;
+clock x;
+clock now;
+chan classified_weed,classified_healthy_plant,classified_diseased_plant;
+int[0,3]  D_id; //Detection id
+
+
+</declaration>
+	<template>
+		<name>Plant_Observer</name>
+		<location id="id0" x="-153" y="212">
+			<name x="-229" y="170">Healthy_plant_Detected</name>
+			<label kind="invariant" x="-161" y="229">x&lt;=2</label>
+		</location>
+		<location id="id1" x="-153" y="-102">
+			<name x="-229" y="-144">Plant_Observer</name>
+		</location>
+		<location id="id2" x="-450" y="25">
+			<name x="-492" y="-9">Weed_Detected</name>
+		</location>
+		<location id="id3" x="-450" y="212">
+			<name x="-492" y="178">Weeder_Active</name>
+		</location>
+		<location id="id4" x="238" y="17">
+			<name x="178" y="-17">Diseased_plant_Detected</name>
+		</location>
+		<location id="id5" x="238" y="212">
+			<name x="178" y="178">CropProtection_Active</name>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-8" y="161">x&gt;=1</label>
+			<label kind="assignment" x="-17" y="144">D_id:=0</label>
+			<nail x="-17" y="212"/>
+			<nail x="-17" y="-102"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-212" y="-17">classified_healthy_plant?</label>
+			<label kind="assignment" x="-144" y="42">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="42" y="68">sprayed_pesticide?</label>
+			<nail x="102" y="212"/>
+			<nail x="102" y="-102"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-365" y="76">weed_removed?</label>
+			<nail x="-297" y="212"/>
+			<nail x="-297" y="-103"/>
+			<nail x="-441" y="-103"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="170" y="102">diseased_plant_loc!</label>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="161" y="-68">classified_diseased_plant?</label>
+			<nail x="238" y="-102"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-492" y="-43">classified_weed?</label>
+			<nail x="-450" y="-103"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-484" y="102">weed_loc!</label>
+		</transition>
+	</template>
+	<template>
+		<name>Image_Classifier</name>
+		<location id="id6" x="-8" y="-187">
+			<name x="-18" y="-221">start_robot</name>
+		</location>
+		<location id="id7" x="-8" y="-93">
+			<name x="-18" y="-127">Sensing</name>
+		</location>
+		<location id="id8" x="-8" y="94">
+			<name x="-18" y="60">Send_result</name>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="guard" x="8" y="-42">D_id==0</label>
+			<nail x="8" y="-8"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-289" y="-34">classified_weed!</label>
+			<label kind="assignment" x="-219" y="-93">D_id:=1</label>
+			<nail x="-237" y="-93"/>
+			<nail x="-237" y="26"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="170" y="-51">classified_diseased_plant!</label>
+			<label kind="assignment" x="161" y="-25">D_id=3</label>
+			<nail x="204" y="-93"/>
+			<nail x="204" y="34"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-153" y="-17">classified_healthy_plant!</label>
+			<label kind="assignment" x="-76" y="26">D_id:=2</label>
+			<nail x="-25" y="0"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+		</transition>
+	</template>
+	<template>
+		<name>Field_Protectors</name>
+		<parameter>int id,chan &amp;location, chan &amp;task_done,int activation_guard,int activation_invariant,int busy_guard,int busy_invariant</parameter>
+		<location id="id9" x="-229" y="-323">
+		</location>
+		<location id="id10" x="17" y="-161">
+			<name x="9" y="-195">busy</name>
+			<label kind="invariant" x="-17" y="-144">x&lt;=busy_invariant</label>
+		</location>
+		<location id="id11" x="17" y="-322">
+			<name x="0" y="-356">Activated</name>
+			<label kind="invariant" x="34" y="-331">x&lt;=activation_invariant</label>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-34" y="-237">x&gt;=activation_guard</label>
+			<label kind="synchronisation" x="-9" y="-280">location?</label>
+			<label kind="assignment" x="26" y="-212">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id11"/>
+			<label kind="guard" x="-211" y="-356">D_id==id</label>
+			<label kind="assignment" x="-51" y="-322">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="guard" x="-246" y="-161">x&gt;=busy_guard</label>
+			<label kind="synchronisation" x="-263" y="-238">task_done!</label>
+			<label kind="assignment" x="-306" y="-212">D_id:=0</label>
+			<nail x="-229" y="-161"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+Observer= Plant_Observer();
+Classifier=Image_Classifier();
+Weeder= Field_Protectors(1,weed_loc,weed_removed,1,2,5,7);
+Crop_protector= Field_Protectors(3,diseased_plant_loc,sprayed_pesticide,1,2,10,12);
+
+
+// List one or more processes to be composed into a system.
+system Observer,Weeder,Crop_protector,Classifier;</system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment>In all reachable states it is the case that : There is NO deadlock in this system
+Yes
+</comment>
+		</query>
+		<query>
+			<formula>A[] Weeder.Activated == (Observer.Weed_Detected)</formula>
+			<comment>In all reachable states it is the case that : Weeder is Activated only when Observer Detects weed
+yes</comment>
+		</query>
+		<query>
+			<formula>A[] Crop_protector.Activated == (Observer.Diseased_plant_Detected)</formula>
+			<comment>In all reachable states it is the case that : CropProtection is Activated only when Observer Detects Diseased plant
+Yes</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Observer.Plant_Observer_Active || Weeder.Activated|| Crop_protector.Activated</formula>
+			<comment>There exists a reachable state such that : Only 1 role can be active at a time
+Yes
+</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Observer.Plant_Observer_Active &amp;&amp; Weeder.Activated &amp;&amp; Crop_protector.Activated</formula>
+			<comment>There exists a reachable state such that : All 3 role can be active at a time?
+No</comment>
+		</query>
+		<query>
+			<formula>A[] ((x&lt;5) || (x&lt;=7)) imply Weeder.busy
+</formula>
+			<comment>In all reachable states it is the case that : Weeder can stay in busy state </comment>
+		</query>
+		<query>
+			<formula>A[] (x ==8) imply !Weeder.busy</formula>
+			<comment>In all reachable states it is the case that : Weeder cannot stay in busy state for more than 7 time units
+Yes</comment>
+		</query>
+	</queries>
+</nta>
