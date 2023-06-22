@@ -316,9 +316,8 @@ Image_classification=Images(image_healthy,image_Diseased,image_weeder,send);
 Weedo= Weeder(weed_found,weed_loc,weeder_done,400,700);
 Safeplants=Healthy_plant(Healthy_plant_detect,Healthyplant_observed,50,100);
 Plant_observer=Observer(image_healthy,Healthy_plant_detect,Healthyplant_observed,send,Crop_Diseased,Pesticides,image_Diseased,150,300);
-Diseased_Crop=Diseased_plant(Crop_Diseased,Pesticides,100,200);
-system Image_classification,Safeplants,Plant_observer,Diseased_Crop,Weedo;
-</system>
+Crop_protection=Diseased_plant(Crop_Diseased,Pesticides,100,200);
+system Image_classification,Safeplants,Plant_observer,Weedo,Crop_protection;</system>
 	<queries>
 		<query>
 			<formula>A[] not deadlock</formula>
