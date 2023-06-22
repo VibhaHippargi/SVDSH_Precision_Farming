@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+//chan weedo_act,W_Signal,H_plant,H_get,H_noaction,D_detection,D_plant,Wsense;
+chan Healthy_plant_detect,Healthyplant_observed,image_healthy,Crop_Diseased,image_Diseased,Pesticides,send;
+chan spraying_done;
+clock x;
+clock t;
+int userinfo;
+int[0,500] signal;
+int[0,300] unsafesignal;
+int removesignal;
+int [0,50] Tm;
+int [0,100] T;
+chan weed_found,weeder_done;
+chan weed_loc,image_weeder;
+</declaration>
+	<template>
+		<name>Weeder</name>
+		<parameter>urgent chan &amp;weed_found,chan &amp;weed_loc, chan &amp;weeder_done,int activation_invariant,int busy_invariant</parameter>
+		<location id="id0" x="-476" y="-59">
+		</location>
+		<location id="id1" x="-85" y="-59">
+			<name x="-95" y="-93">busy</name>
+			<label kind="invariant" x="-85" y="-34">x&lt;=busy_invariant</label>
+		</location>
+		<location id="id2" x="-272" y="-59">
+			<name x="-315" y="-93">Activated</name>
+			<label kind="invariant" x="-391" y="-42">x&lt;=activation_invariant</label>
+		</location>
+		<init ref="id0"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-416" y="93">weeder_done!</label>
+			<nail x="-85" y="102"/>
+			<nail x="-476" y="93"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-228" y="-76">weed_loc?</label>
+			<label kind="assignment" x="-228" y="-59">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-535" y="-93">userinfo==signal</label>
+			<label kind="synchronisation" x="-373" y="-76">weed_found?</label>
+			<label kind="assignment" x="-373" y="-59">x:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name x="5" y="5">Healthy_plant</name>
+		<parameter>chan &amp;Hdetect,chan &amp;Healthyplant_observed,int Tm,int T</parameter>
+		<declaration>// Place local declarations here
+clock x;
+//int t;
+</declaration>
+		<location id="id3" x="-34" y="-85">
+			<name x="-44" y="-119">Healthy</name>
+			<label kind="invariant" x="-44" y="-68">x&lt;=T</label>
+		</location>
+		<location id="id4" x="-229" y="59">
+			<name x="-272" y="67">noaction</name>
+			<label kind="invariant" x="-246" y="85">x&lt;=Tm</label>
+		</location>
+		<location id="id5" x="-408" y="-76">
+			<name x="-418" y="-110">Start</name>
+		</location>
+		<location id="id6" x="-221" y="-195">
+			<name x="-231" y="-229">Crop_good</name>
+		</location>
+		<init ref="id5"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-450" y="-8">Healthyplant_observed!</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="assignment" x="-178" y="-17">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id3"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-416" y="-170">userinfo==signal</label>
+			<label kind="synchronisation" x="-323" y="-136">Healthy_plant_detect?</label>
+			<label kind="assignment" x="-340" y="-153">x:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Observer</name>
+		<parameter>chan &amp;image_healthy,chan &amp;Sensordetect, chan &amp;Healthyplant_observed ,chan &amp;send,chan &amp;Crop_Diseased,chan &amp;Pesticides,chan &amp;image_Diseased,int TD,int TH</parameter>
+		<declaration>clock x;</declaration>
+		<location id="id7" x="-331" y="-144">
+			<name x="-374" y="-144">IDLE</name>
+		</location>
+		<location id="id8" x="-331" y="42">
+			<name x="-476" y="51">Receive_safe_plantimage</name>
+		</location>
+		<location id="id9" x="-110" y="42">
+			<name x="-93" y="34">send_to_sensor</name>
+			<label kind="invariant" x="-120" y="59">x&lt;=150</label>
+			<urgent/>
+		</location>
+		<location id="id10" x="-110" y="-144">
+			<name x="-110" y="-170">Healthy_plant</name>
+		</location>
+		<location id="id11" x="-586" y="33">
+			<name x="-629" y="42">Actionspray</name>
+			<urgent/>
+		</location>
+		<location id="id12" x="-765" y="-136">
+			<name x="-884" y="-144">Actionperformed</name>
+			<label kind="invariant" x="-799" y="-119">x&lt;=300</label>
+		</location>
+		<location id="id13" x="-586" y="-144">
+			<name x="-680" y="-178">Receive_diseasedimage</name>
+		</location>
+		<location id="id14" x="-323" y="-348">
+			<name x="-357" y="-382">Receive_weedimage</name>
+		</location>
+		<location id="id15" x="-85" y="-340">
+			<name x="-111" y="-374">Sending_Location</name>
+		</location>
+		<location id="id16" x="85" y="-340">
+			<name x="75" y="-374">Weeder_Active</name>
+			<label kind="invariant" x="102" y="-348">x&lt;=1100</label>
+		</location>
+		<location id="id17" x="17" y="-204">
+			<name x="7" y="-238">Weeder_done</name>
+		</location>
+		<location id="id18" x="-765" y="-246">
+			<name x="-775" y="-280">Waiting_for_feedback</name>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id18"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-561" y="-263">send!</label>
+			<nail x="-340" y="-229"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id18"/>
+			<label kind="synchronisation" x="-884" y="-204">spraying_done?</label>
+		</transition>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="80" y="-306">weeder_done?</label>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-178" y="-204">send!</label>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="-59" y="-340">weed_loc!</label>
+			<label kind="assignment" x="-85" y="-331">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id15"/>
+			<label kind="synchronisation" x="-246" y="-340">weed_found!</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id14"/>
+			<label kind="guard" x="-297" y="-289">userinfo==signal</label>
+			<label kind="synchronisation" x="-306" y="-255">image_weeder?</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-756" y="-59">Pesticides?</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-688" y="-102">Crop_Diseased!</label>
+			<label kind="assignment" x="-586" y="-51">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id13"/>
+			<label kind="guard" x="-493" y="-161">userinfo==signal</label>
+			<label kind="synchronisation" x="-578" y="-144">image_Diseased?</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-238" y="-144">send!</label>
+			<nail x="-289" y="-144"/>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-110" y="-85">Healthyplant_observed?</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-280" y="42">Sensordetect!</label>
+			<label kind="assignment" x="-313" y="42">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-331" y="-51">userinfo==signal</label>
+			<label kind="synchronisation" x="-433" y="-93">image_healthy?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Diseased_plant</name>
+		<parameter>chan &amp;Crop_Diseased,chan &amp;Pesticides,int TDless,int TDmore</parameter>
+		<location id="id19" x="-204" y="-110">
+			<name x="-272" y="-144">Plant_observer</name>
+		</location>
+		<location id="id20" x="25" y="-76">
+			<name x="8" y="-68">Diseased</name>
+			<label kind="invariant" x="17" y="-51">x&lt;=TDmore</label>
+		</location>
+		<location id="id21" x="-187" y="26">
+			<name x="-238" y="25">Action</name>
+			<label kind="invariant" x="-197" y="43">x&lt;=TDless</label>
+		</location>
+		<location id="id22" x="-323" y="-59">
+			<name x="-365" y="-85">Spray</name>
+		</location>
+		<init ref="id19"/>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id20"/>
+			<label kind="guard" x="-161" y="-119">userinfo==signal</label>
+			<label kind="synchronisation" x="-127" y="-85">Crop_Diseased?</label>
+			<label kind="assignment" x="-153" y="-102">x:=0</label>
+		</transition>
+		<transition>
+			<source ref="id22"/>
+			<target ref="id19"/>
+			<label kind="synchronisation" x="-305" y="-101">spraying_done!</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id22"/>
+			<label kind="synchronisation" x="-323" y="-25">Pesticides!</label>
+		</transition>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id21"/>
+			<label kind="assignment" x="-152" y="17">x:=0</label>
+			<nail x="-170" y="17"/>
+		</transition>
+	</template>
+	<template>
+		<name>Images</name>
+		<parameter>chan &amp;image_healthy,chan &amp;image_Diseased,chan &amp;image_weeder,chan &amp;send</parameter>
+		<declaration>clock x;</declaration>
+		<location id="id23" x="-323" y="-119">
+			<name x="-391" y="-144">IDLE</name>
+		</location>
+		<location id="id24" x="-144" y="-119">
+			<name x="-161" y="-110">Sense</name>
+		</location>
+		<location id="id25" x="0" y="-119">
+			<name x="8" y="-144">user</name>
+		</location>
+		<init ref="id23"/>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id25"/>
+			<label kind="synchronisation" x="-126" y="-68">image_Diseased!</label>
+			<nail x="-144" y="-51"/>
+			<nail x="-34" y="-51"/>
+		</transition>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id25"/>
+			<label kind="synchronisation" x="-126" y="-229">image_weeder!</label>
+			<nail x="-144" y="-212"/>
+			<nail x="0" y="-212"/>
+		</transition>
+		<transition>
+			<source ref="id25"/>
+			<target ref="id23"/>
+			<label kind="synchronisation" x="-153" y="-17">send?</label>
+			<nail x="-25" y="0"/>
+			<nail x="-221" y="0"/>
+		</transition>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id25"/>
+			<label kind="synchronisation" x="-119" y="-136">image_healthy!</label>
+		</transition>
+		<transition>
+			<source ref="id23"/>
+			<target ref="id24"/>
+			<label kind="guard" x="-306" y="-136">userinfo==signal</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+const int Healthy = 200;
+const int Diseased = 300;
+const int unuse=100;
+Image_classification=Images(image_healthy,image_Diseased,image_weeder,send);
+Weedo= Weeder(weed_found,weed_loc,weeder_done,400,700);
+Safeplants=Healthy_plant(Healthy_plant_detect,Healthyplant_observed,50,100);
+Plant_observer=Observer(image_healthy,Healthy_plant_detect,Healthyplant_observed,send,Crop_Diseased,Pesticides,image_Diseased,150,300);
+Diseased_Crop=Diseased_plant(Crop_Diseased,Pesticides,100,200);
+system Image_classification,Safeplants,Plant_observer,Diseased_Crop,Weedo;
+</system>
+	<queries>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment>There is no deadlock</comment>
+		</query>
+		<query>
+			<formula>A[] Plant_observer.IDLE &amp;&amp; Weedo.busy &amp;&amp; Diseased_Crop.Spray</formula>
+			<comment>Can all 3 roles be active at a given point?
+No,property not satisfied</comment>
+		</query>
+		<query>
+			<formula>A[] (!(Plant_observer.IDLE)) || (!(Weedo.busy)) || Diseased_Crop.Spray</formula>
+			<comment>Is it true that only 1 role can be active at a time (here: Spraying pesticide)
+Yes, property satisfied</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Safeplants.Healthy</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] not (Safeplants.Healthy and x&lt;T)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>A[] not (Safeplants.Healthy and x&lt;Tm)</formula>
+			<comment></comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Safeplants.Healthy imply x&gt;=Diseased	</formula>
+			<comment></comment>
+		</query>
+	</queries>
+</nta>
