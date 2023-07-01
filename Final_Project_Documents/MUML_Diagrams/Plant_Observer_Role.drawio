@@ -1,0 +1,109 @@
+<mxfile host="app.diagrams.net" modified="2023-07-01T11:03:14.282Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="uiLQyvs-uoVg4KPjm5RE" version="21.5.0" type="device">
+  <diagram name="Page-1" id="JjDHJsA9zgzVDjaPldGE">
+    <mxGraphModel dx="1105" dy="649" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-1" value="Idle" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="130" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="WZHPAQMHFC7LTsEDvdTi-3" target="WZHPAQMHFC7LTsEDvdTi-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#0d0c0c;" parent="1" vertex="1">
+          <mxGeometry x="70" y="90" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-4" value="Plant_Position() /" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="145" y="80" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="WZHPAQMHFC7LTsEDvdTi-5" target="WZHPAQMHFC7LTsEDvdTi-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-5" value="Select_plant" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="380" y="160" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-8" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="WZHPAQMHFC7LTsEDvdTi-1" target="WZHPAQMHFC7LTsEDvdTi-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="260" as="sourcePoint" />
+            <mxPoint x="450" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-13" value="Plant Observer" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=31;" parent="1" vertex="1">
+          <mxGeometry x="65" y="8" width="230" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="WZHPAQMHFC7LTsEDvdTi-17" target="WZHPAQMHFC7LTsEDvdTi-18" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="WZHPAQMHFC7LTsEDvdTi-17" target="WZHPAQMHFC7LTsEDvdTi-19" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="WZHPAQMHFC7LTsEDvdTi-17" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="680" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-17" value="Image_Classification" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="410" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="WZHPAQMHFC7LTsEDvdTi-18" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="550" as="sourcePoint" />
+            <mxPoint x="180" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-18" value="Healthy_plant" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="230" y="550" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8LvYKBBtrALS3Q0mkw1L-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="WZHPAQMHFC7LTsEDvdTi-19" target="WZHPAQMHFC7LTsEDvdTi-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="700" />
+              <mxPoint x="110" y="700" />
+              <mxPoint x="110" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8LvYKBBtrALS3Q0mkw1L-2" value="Send_Update" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="8LvYKBBtrALS3Q0mkw1L-1">
+          <mxGeometry x="-0.4754" relative="1" as="geometry">
+            <mxPoint x="-3" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-19" value="Weeder" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="410" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-26" value="Image_Capture()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=90;" parent="1" vertex="1">
+          <mxGeometry x="440" y="290" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-27" value="/ Weed_Identified() ?&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=90;" parent="1" vertex="1">
+          <mxGeometry x="425" y="510" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-28" value="/ Diseased_Plant_Identified () ?&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=90;" parent="1" vertex="1">
+          <mxGeometry x="605" y="498" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-29" value="Healthy_Plant_Identified () ? /" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="230" y="388" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WZHPAQMHFC7LTsEDvdTi-30" value="Plant_Observer.Send_Ack()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=270;" parent="1" vertex="1">
+          <mxGeometry x="85" y="398" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="8LvYKBBtrALS3Q0mkw1L-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.167;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="gLDC76PEN8ui1h2GEdAN-1" target="WZHPAQMHFC7LTsEDvdTi-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="640" />
+              <mxPoint x="780" y="130" />
+              <mxPoint x="250" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="8LvYKBBtrALS3Q0mkw1L-5" value="Send_Update" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=90;" vertex="1" connectable="0" parent="8LvYKBBtrALS3Q0mkw1L-4">
+          <mxGeometry x="-0.6119" relative="1" as="geometry">
+            <mxPoint x="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gLDC76PEN8ui1h2GEdAN-1" value="Crop Protection" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="620" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
