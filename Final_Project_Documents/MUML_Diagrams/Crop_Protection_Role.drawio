@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-07-01T11:03:09.128Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="AqyOuHrCvqziN9JGWMSC" version="21.5.0" type="device">
+<mxfile host="app.diagrams.net" modified="2023-07-03T06:31:54.784Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="lM01gnF9ZLKeZQYKVf-z" version="21.5.2" type="device">
   <diagram name="Page-1" id="NqcA4VGolqbiGWAiVVS3">
-    <mxGraphModel dx="1235" dy="726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1050" dy="561" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -13,8 +13,8 @@
         <mxCell id="RpHPFH-tG3lKaWMk9xFU-3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#0d0c0c;" parent="1" vertex="1">
           <mxGeometry x="70" y="90" width="30" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="RpHPFH-tG3lKaWMk9xFU-4" value="Plant_Position() /" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="160" y="80" width="110" height="30" as="geometry" />
+        <mxCell id="RpHPFH-tG3lKaWMk9xFU-4" value="Diseased_Plant_Identified ! /" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="125" y="80" width="180" height="30" as="geometry" />
         </mxCell>
         <mxCell id="RpHPFH-tG3lKaWMk9xFU-5" value="Select_Diseased_crop" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="360" y="160" width="180" height="60" as="geometry" />
@@ -56,10 +56,10 @@
         <mxCell id="RpHPFH-tG3lKaWMk9xFU-12" value="Crop Protection" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=31;" parent="1" vertex="1">
           <mxGeometry x="60" y="8" width="240" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="MQfkv6SIsC6gJvma-DIN-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="RpHPFH-tG3lKaWMk9xFU-14" target="MQfkv6SIsC6gJvma-DIN-1">
+        <mxCell id="MQfkv6SIsC6gJvma-DIN-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="RpHPFH-tG3lKaWMk9xFU-14" target="MQfkv6SIsC6gJvma-DIN-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="MQfkv6SIsC6gJvma-DIN-3" value="! User_Intervention_Required" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=90;" vertex="1" connectable="0" parent="MQfkv6SIsC6gJvma-DIN-2">
+        <mxCell id="MQfkv6SIsC6gJvma-DIN-3" value="! User_Intervention_Required" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=90;" parent="MQfkv6SIsC6gJvma-DIN-2" vertex="1" connectable="0">
           <mxGeometry x="-0.2235" y="-1" relative="1" as="geometry">
             <mxPoint x="11" y="14" as="offset" />
           </mxGeometry>
@@ -73,7 +73,7 @@
         <mxCell id="RpHPFH-tG3lKaWMk9xFU-17" value="/ Abort()" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=270;" parent="1" vertex="1">
           <mxGeometry x="395" y="710" width="70" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="MQfkv6SIsC6gJvma-DIN-1" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#100f0f;" vertex="1" parent="1">
+        <mxCell id="MQfkv6SIsC6gJvma-DIN-1" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#100f0f;" parent="1" vertex="1">
           <mxGeometry x="435" y="810" width="30" height="30" as="geometry" />
         </mxCell>
       </root>
